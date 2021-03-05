@@ -96,42 +96,4 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
     s.ChannelMessageSendEmbed(m.ChannelID, embed)
 	}
-
-  if strings.ToLower(m.Content) == "?why so memeless" {
-    resp, err := http.Get("https://imgur.com/r/memes/top.json")
-    if err != nil {
-      fmt.Println("error with request: ", err)
-    }
-
-    body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      fmt.Println("error with request: ", err)
-    }
-
-    //fmt.Println("Body ", string(body))
-
-    type Data struct {
-      Hash string
-    }
-
-    type Meme struct {
-      Data []Data
-    }
-
-    var meme Meme
-
-    json.Unmarshal([]byte(body), &meme)
-    hash := meme.Data[rand.Intn(60)].Hash
-
-    embed := &discordgo.MessageEmbed{
-      Color: 0x004400,
-      Timestamp: time.Now().Format(time.RFC3339),
-      Title: "Let's put a smile on that face...",
-      Image: &discordgo.MessageEmbedImage{
-        URL: "https://i.imgur.com/" + hash + ".jpg",
-      },
-    }
-
-    s.ChannelMessageSendEmbed(m.ChannelID, embed)
-	}
 }
