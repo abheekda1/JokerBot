@@ -28,7 +28,7 @@ func main() {
   rand.Seed(time.Now().UnixNano())
 
 	// Create a new Discord session using the provided bot token.
-	dg, err := discordgo.New("Bot " + "ODE3NDkwNDgyMDAyNTI2Mjk4.YEKRVw.CFi4lxyf74JcKR2lB-uEAK0tMgk")
+	dg, err := discordgo.New("Bot " + os.Args[1])
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
 		return
