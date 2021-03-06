@@ -1,16 +1,16 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"math/rand"
+	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
-  "strings"
-  "io/ioutil"
-  "net/http"
-  "time"
-  "encoding/json"
-  "math/rand"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -25,7 +25,7 @@ func init() {
 }
 
 func main() {
-  rand.Seed(time.Now().UnixNano())
+	rand.Seed(time.Now().UnixNano())
 
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + os.Args[1])
@@ -68,32 +68,79 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if strings.ToLower(m.Content) == "?why so serious" {
-    resp, err := http.Get("https://official-joke-api.appspot.com/random_joke")
-    if err != nil {
-      fmt.Println("error with request: ", err)
-    }
+		resp, err := http.Get("https://official-joke-api.appspot.com/random_joke")
+		if err != nil {
+			fmt.Println("error with request: ", err)
+		}
 
-    body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      fmt.Println("error with request: ", err)
-    }
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println("error with request: ", err)
+		}
 
-    type Joke struct {
-      Setup string
-      Punchline string
-    }
+		type Joke struct {
+			Setup     string
+			Punchline string
+		}
 
-    var joke Joke;
+		var joke Joke
 
-    json.Unmarshal([]byte(string(body)), &joke)
+		json.Unmarshal([]byte(string(body)), &joke)
 
-    embed := &discordgo.MessageEmbed{
-      Color: 0x004400,
-      Description: joke.Setup + "\n||" + joke.Punchline + "||",
-      Timestamp: time.Now().Format(time.RFC3339),
-      Title: "Let's put a smile on that face...",
-    }
+		embed := &discordgo.MessageEmbed{
+			Color:       0x004400,
+			Description: joke.Setup + "\n||" + joke.Punchline + "||",
+			Timestamp:   time.Now().Format(time.RFC3339),
+			Title:       "Let's put a smile on that face...",
+		}
 
-    s.ChannelMessageSendEmbed(m.ChannelID, embed)
+		s.ChannelMessageSendEmbed(m.ChannelID, embed)
+	}
+
+	if strings.ToLower(m.Content) == "?why so scientist" {
+		resp, err := http.Get("https://jokes.adawesome.tech/jokes/random/science")
+		if err != nil {
+			fmt.Println("error with request: ", err)
+		}
+
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println("error with request: ", err)
+		}
+
+		type Joke struct {
+			Subject   string
+			Title     string
+			Setup     string
+			Punchline string
+			Oneliner  string
+		}
+
+		var joke Joke
+
+		json.Unmarshal([]byte(string(body)), &joke)
+
+		fmt.Println("Oneliner b4: \"" + joke.Oneliner + "\"")
+		fmt.Println(joke)
+
+		if joke.Oneliner != "" {
+			fmt.Println("Oneliner after: \"" + joke.Oneliner + "\"")
+			embed := &discordgo.MessageEmbed{
+				Color:       0x004400,
+				Description: joke.Oneliner,
+				Timestamp:   time.Now().Format(time.RFC3339),
+				Title:       "Let's put a smile on that face...",
+			}
+			s.ChannelMessageSendEmbed(m.ChannelID, embed)
+		} else {
+			embed := &discordgo.MessageEmbed{
+				Color:       0x004400,
+				Description: joke.Setup + "\n||" + joke.Punchline + "||",
+				Timestamp:   time.Now().Format(time.RFC3339),
+				Title:       "Let's put a smile on that face...",
+			}
+			s.ChannelMessageSendEmbed(m.ChannelID, embed)
+		}
+
 	}
 }
