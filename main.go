@@ -97,8 +97,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSendEmbed(m.ChannelID, embed)
 	}
 
-	if strings.ToLower(m.Content) == "?why so scientist" {
-		resp, err := http.Get("https://jokes.adawesome.tech/jokes/random/science")
+	if strings.ToLower(m.Content) == "?why so scientific" {
+		resp, err := http.Get("http://localhost:3587/jokes/random/science")
 		if err != nil {
 			fmt.Println("error with request: ", err)
 		}
@@ -120,11 +120,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 		json.Unmarshal([]byte(string(body)), &joke)
 
-		fmt.Println("Oneliner b4: \"" + joke.Oneliner + "\"")
-		fmt.Println(joke)
-
 		if joke.Oneliner != "" {
-			fmt.Println("Oneliner after: \"" + joke.Oneliner + "\"")
 			embed := &discordgo.MessageEmbed{
 				Color:       0x004400,
 				Description: joke.Oneliner,
