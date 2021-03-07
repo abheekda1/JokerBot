@@ -147,4 +147,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 		s.ChannelMessageSendEmbed(m.ChannelID, embed)
 	}
+
+	if strings.ToLower(m.Content) == "?why so statistical" {
+		embed := &discordgo.MessageEmbed{
+			Color:       0x004400,
+			Description: fmt.Sprintf("Servers: %v", len(s.State.Guilds)),
+			Title:       "Stats",
+		}
+		s.ChannelMessageSendEmbed(m.ChannelID, embed)
+	}
 }
