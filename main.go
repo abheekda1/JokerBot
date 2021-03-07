@@ -141,6 +141,14 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 			s.ChannelMessageSendEmbed(m.ChannelID, embed)
 		}
-
 	}
+
+  if (strings.ToLower(m.content) == "?why so helpful") {
+    embed := &discordgo.MessageEmbed{
+      Color: 0x004400,
+      Description: "`?why so serious`: get a random joke\n`?why so scientific`: get a science joke",
+      Title: "Commands:"
+    }
+    s.ChannelMessageSendEmbed(m.ChannelID, embed)
+  }
 }
