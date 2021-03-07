@@ -68,7 +68,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if strings.ToLower(m.Content) == "?why so serious" {
-		resp, err := http.Get("https://official-joke-api.appspot.com/random_joke")
+		resp, err := http.Get("http://localhost:3587/jokes/random/general")
 		if err != nil {
 			fmt.Println("error with request: ", err)
 		}
