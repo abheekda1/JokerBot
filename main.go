@@ -79,22 +79,34 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 
 		type Joke struct {
+			Subject   string
+			Title     string
 			Setup     string
 			Punchline string
+			Oneliner  string
 		}
 
 		var joke Joke
 
 		json.Unmarshal([]byte(string(body)), &joke)
 
-		embed := &discordgo.MessageEmbed{
-			Color:       0x004400,
-			Description: joke.Setup + "\n||" + joke.Punchline + "||",
-			Timestamp:   time.Now().Format(time.RFC3339),
-			Title:       "Let's put a smile on that face...",
+		if joke.Oneliner != "" {
+			embed := &discordgo.MessageEmbed{
+				Color:       0x004400,
+				Description: joke.Oneliner,
+				Timestamp:   time.Now().Format(time.RFC3339),
+				Title:       "Let's put a smile on that face...",
+			}
+			s.ChannelMessageSendEmbed(m.ChannelID, embed)
+		} else {
+			embed := &discordgo.MessageEmbed{
+				Color:       0x004400,
+				Description: joke.Setup + "\n||" + joke.Punchline + "||",
+				Timestamp:   time.Now().Format(time.RFC3339),
+				Title:       "Let's put a smile on that face...",
+			}
+			s.ChannelMessageSendEmbed(m.ChannelID, embed)
 		}
-
-		s.ChannelMessageSendEmbed(m.ChannelID, embed)
 	}
 
 	if strings.ToLower(m.Content) == "?why so scientific" {
