@@ -18,7 +18,6 @@ import (
 // Variables used for command line parameters
 var (
 	Token string
-
 )
 
 type Joke struct {
@@ -27,11 +26,6 @@ type Joke struct {
 	Setup     string
 	Punchline string
 	Oneliner  string
-}
-
-
-func init() {
-
 }
 
 func main() {
@@ -78,7 +72,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if strings.ToLower(m.Content) == "?why so serious" {
-		resp, err := http.Get("http://localhost:3587/jokes/random/general")
+		resp, err := http.Get("https://jokes.adawesome.tech/jokes/random/general")
 		if err != nil {
 			fmt.Println("error with request: ", err)
 		}
@@ -112,7 +106,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if strings.ToLower(m.Content) == "?why so scientific" {
-		resp, err := http.Get("http://localhost:3587/jokes/random/science")
+		resp, err := http.Get("https://jokes.adawesome.tech/jokes/random/science")
 		if err != nil {
 			fmt.Println("error with request: ", err)
 		}
