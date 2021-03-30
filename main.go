@@ -19,14 +19,16 @@ import (
 var (
 	Token string
 
-    type Joke struct {
-    	Subject   string
-		Title     string
-		Setup     string
-		Punchline string
-		Oneliner  string
-	}
 )
+
+type Joke struct {
+   	Subject   string
+	Title     string
+	Setup     string
+	Punchline string
+	Oneliner  string
+}
+
 
 func init() {
 
