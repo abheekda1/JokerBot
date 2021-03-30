@@ -21,7 +21,7 @@ var (
 )
 
 type Joke struct {
-   	Subject   string
+	Subject   string
 	Title     string
 	Setup     string
 	Punchline string
@@ -31,7 +31,11 @@ type Joke struct {
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	// Create a new Discord session using the provided bot token.
+	if len(os.Args) < 2 {
+		fmt.Println("You forgot the token!")
+		return
+	}
+
 	dg, err := discordgo.New("Bot " + os.Args[1])
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
