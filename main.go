@@ -18,6 +18,14 @@ import (
 // Variables used for command line parameters
 var (
 	Token string
+
+    type Joke struct {
+    	Subject   string
+		Title     string
+		Setup     string
+		Punchline string
+		Oneliner  string
+	}
 )
 
 func init() {
@@ -78,14 +86,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			fmt.Println("error with request: ", err)
 		}
 
-		type Joke struct {
-			Subject   string
-			Title     string
-			Setup     string
-			Punchline string
-			Oneliner  string
-		}
-
 		var joke Joke
 
 		json.Unmarshal([]byte(string(body)), &joke)
@@ -118,14 +118,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		body, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			fmt.Println("error with request: ", err)
-		}
-
-		type Joke struct {
-			Subject   string
-			Title     string
-			Setup     string
-			Punchline string
-			Oneliner  string
 		}
 
 		var joke Joke
